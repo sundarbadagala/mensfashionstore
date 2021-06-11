@@ -1,0 +1,38 @@
+.header-font{
+    font-size: 30px;
+    text-shadow: 0px 0px 5px black;
+}
+.card-width{
+    width: 220px;
+}
+.image-height{
+    height: 270px;
+}
+
+@media screen and (max-width:618px) {
+    .header-font{
+        font-size: 20px;
+    }   
+}
+
+@media screen and (max-width:411px) {
+    .header-font{
+        font-size: 17px;
+    }
+    .card-width{
+        width: 180px;
+    }
+    .image-height{
+        height: 220px;
+    }
+    
+}
+
+@media screen and (max-width:375px) {
+    .card-width{
+        width: 160px;
+    }
+    .image-height{
+        height: 220px;
+    }
+}
