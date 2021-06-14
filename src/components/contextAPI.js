@@ -10,7 +10,9 @@ class ProductProvider extends React.Component{
     
         this.state = {
              products:[],
-             cart:{}
+             cart:{},
+             order:{},
+             errorMessage:''
         }
     }
     componentDidMount(){
@@ -25,7 +27,6 @@ class ProductProvider extends React.Component{
     }
     fetchCart = async ()=>{
         const response = await commerce.cart.retrieve()
-        console.log(response)
         this.setState({
             cart: response
         })
@@ -54,6 +55,26 @@ class ProductProvider extends React.Component{
             cart: response.cart
         })
     }
+    handleCaptureCheckout= async(checkoutTokenId, newOrder)=>{
+        try{
+            const incomingOrder= await commerce.checkout.capture(checkoutTokenId, newOrder)
+            this.setState({
+                order: incomingOrder,
+                cart: await commerce.cart.refresh()
+            })
+            this.refreshCart()
+        }catch(error){
+            this.setState({
+                errorMessage: error.data.error.message
+            })
+        }
+    }
+    // refreshCart= async ()=>{
+    //     const newCart = await commerce.cart.refresh()
+    //     this.setState({
+    //         cart: newCart
+    //     })
+    // }
     render() {
         return (
             <ProductContext.Provider value={{
@@ -61,7 +82,8 @@ class ProductProvider extends React.Component{
                 addToCart: this.addToCart,
                 updateItem: this.updateItem,
                 removeItem: this.removeItem,
-                emptyCart: this.emptyCart
+                emptyCart: this.emptyCart,
+                handleCaptureCheckout: this.handleCaptureCheckout
             }}
             >
                 {this.props.children}

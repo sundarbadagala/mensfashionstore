@@ -6,7 +6,6 @@ import CartTotal from './CartTotal'
 
 function CartList() {
     const product= useContext(ProductContext)
-    console.log(product.cart)
     return (
         <Container fluid>
             <Row>

@@ -1,6 +1,7 @@
 import React, { useContext } from 'react'
 import {Button } from 'react-bootstrap'
 import {ProductContext} from '../contextAPI'
+import {Link} from 'react-router-dom'
 
 function CartTotal() {
     const product = useContext(ProductContext)
@@ -13,9 +14,11 @@ function CartTotal() {
                 <Button onClick={()=>product.emptyCart()} className='mr-4' variant='danger'>
                     Clear Cart
                 </Button>
+                <Link to='/checkout'>
                 <Button variant='success'>
                     Check Out
                 </Button>
+                </Link>
             </div>
         </React.Fragment>
     )
