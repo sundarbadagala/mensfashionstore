@@ -43,6 +43,7 @@ function PaymentForm({backStep, nextStep, shippingData, checkoutToken}) {
             }
             product.handleCaptureCheckout(checkoutToken.id, orderData)
             nextStep()   
+            //console.log(checkoutToken.id, orderData)
         }
     }
     return (

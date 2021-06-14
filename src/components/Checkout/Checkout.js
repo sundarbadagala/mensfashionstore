@@ -45,7 +45,7 @@ function Checkout() {
             return <ConfirmationForm/>
         }
     }
-    console.log(shippingData)
+    //console.log(shippingData)
     return (
         <div>
             {checkoutToken && FinalValue()}

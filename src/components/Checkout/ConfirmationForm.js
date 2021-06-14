@@ -3,9 +3,11 @@ import {ProductContext} from '../contextAPI'
 
 function ConfirmationForm() {
     const product= useContext(ProductContext)
+    console.log(product.newOrder)
     return (
         <div>
-            {product.order.customer.name}
+            thanks for purchasing {product.newOrder.customer ? <span>{product.newOrder.customer.name}</span>:null }<br/>
+            your ref id is : {product.checkoutTokenId}
         </div>
     )
 }

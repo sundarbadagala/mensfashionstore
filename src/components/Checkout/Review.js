@@ -2,7 +2,7 @@ import React from 'react'
 import {Container, Row, Col, Card} from 'react-bootstrap'
 
 function Review({checkoutToken}) {
-    console.log(checkoutToken.live.line_items.map(product => product.name))
+    //console.log(checkoutToken.live.line_items.map(product => product.name))
     return (
         <Container>
         <Card>

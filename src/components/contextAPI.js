@@ -12,13 +12,12 @@ class ProductProvider extends React.Component{
              products:[],
              cart:{},
              order:{},
-             errorMessage:''
+             errorMessage:'',
+             checkoutTokenId:'',
+             newOrder:{}
         }
     }
-    componentDidMount(){
-        this.fetchProducts()
-        this.fetchCart()
-    }
+    
     fetchProducts= async ()=>{
         const response= await commerce.products.list()
         this.setState({
@@ -55,27 +54,29 @@ class ProductProvider extends React.Component{
             cart: response.cart
         })
     }
-    handleCaptureCheckout= async(checkoutTokenId, newOrder)=>{
-        try{
-            const incomingOrder= await commerce.checkout.capture(checkoutTokenId, newOrder)
-            this.setState({
-                order: incomingOrder,
-                cart: await commerce.cart.refresh()
-            })
-            this.refreshCart()
-        }catch(error){
-            this.setState({
-                errorMessage: error.data.error.message
-            })
-        }
+    refreshCart= async ()=>{
+        const newCart = await commerce.cart.refresh()
+        this.setState({
+            cart: newCart
+        })
     }
-    // refreshCart= async ()=>{
-    //     const newCart = await commerce.cart.refresh()
-    //     this.setState({
-    //         cart: newCart
-    //     })
-    // }
+    handleCaptureCheckout= (checkoutTokenId, newOrder)=>{
+        this.setState({
+            checkoutTokenId:checkoutTokenId,
+            newOrder:newOrder
+        })
+        //console.log('direct new order', checkoutTokenId)
+        commerce.checkout.capture(checkoutTokenId, newOrder)
+        .then(res => console.log(res))
+        .catch(error => console.log(error))
+    }
+   
+    componentDidMount(){
+        this.fetchProducts()
+        this.fetchCart()
+    }
     render() {
+        //console.log(this.state.newOrder.customer && this.state.newOrder.customer.name)
         return (
             <ProductContext.Provider value={{
                 ...this.state,
