@@ -13,8 +13,8 @@ function PaymentForm({backStep, nextStep, shippingData, checkoutToken}) {
     const handleSubmit= async (event, elements, stripe)=>{
         event.preventDefault()
         if(!stripe || !elements) return;
-        const cardElements = elements.getElement(CardElement)
 
+        const cardElements = elements.getElement(CardElement)
         const {error, paymentMethod} = await stripe.createPaymentMethod({type:'card', card:cardElements})
 
         if(error){
@@ -23,16 +23,20 @@ function PaymentForm({backStep, nextStep, shippingData, checkoutToken}) {
             const orderData={
                 line_items: checkoutToken.live.line_items,
                 customer: {
-                    name:shippingData.name,
-                    number:shippingData.number,
-                    mail: shippingData.mail,
+                    firstname:shippingData.firstName,
+                    lastname:shippingData.lastName,
+                    email: shippingData.mail,
                 },
                 shipping:{
                     name:'Primary',
-                    state:shippingData.state,
-                    district: shippingData.district,
-                    city: shippingData.city,
-                    pin: shippingData.pin
+                    street:shippingData.address1,
+                    town_city: shippingData.city,
+                    county_state: shippingData.shippingSubdivision,
+                    postal_zip_code: shippingData.zip,
+                    country: shippingData.shippingCountry
+                },
+                fulfillment:{
+                  shipping_method: shippingData.shippingOption  
                 },
                 payment:{
                     gateway:'stripe',
@@ -43,49 +47,48 @@ function PaymentForm({backStep, nextStep, shippingData, checkoutToken}) {
             }
             product.handleCaptureCheckout(checkoutToken.id, orderData)
             nextStep()   
-            //console.log(checkoutToken.id, orderData)
         }
     }
     return (
         <Container>
             <Review checkoutToken={checkoutToken}/>
             <Container fluid>
-            <Card>
-            <Card.Header>
-            <Row>
-            <Col className='text-center font-weight-bold'>
-            payment methods
-            </Col>
-            </Row>
-            </Card.Header>
-            <Card.Body>
-            <Row>
-            <Col>
-            
-            <Elements stripe={stripePromise}> 
-            <ElementsConsumer>
-            {
-                ({elements, stripe})=>(
-                    <form onSubmit={(e)=>handleSubmit(e, elements, stripe)}>
-                        <CardElement/><br/>
-                        <div>
-                            <Button onClick={backStep}>Back</Button>
-                            <Button type='sumbit' disabled={!stripe}>
-                                Pay {checkoutToken.live.subtotal.formatted_with_symbol}
-                            </Button>
-                        </div>
-                    </form>
-                )
-            }
-        </ElementsConsumer>
-            </Elements>
-            
-            </Col>
-            </Row>
-            </Card.Body>
-            </Card>
+                <Card>
+                    <Card.Header>
+                    <Row>
+                        <Col className='text-center font-weight-bold'>
+                            Payment Method
+                        </Col>
+                    </Row>
+                    </Card.Header>
+                    <Card.Body>
+                    <Row>
+                        <Col>            
+                            <Elements stripe={stripePromise}> 
+                            <ElementsConsumer>
+                                {
+                                    ({elements, stripe})=>(
+                                        <form onSubmit={(e)=>handleSubmit(e, elements, stripe)}>
+                                            <CardElement/><br/>
+                                            <div className='d-flex justify-content-between'>
+                                            <Button onClick={backStep} className='px-4'>
+                                                Back
+                                            </Button>
+                                            <Button type='sumbit' disabled={!stripe}>
+                                                Pay {checkoutToken.live.subtotal.formatted_with_symbol}
+                                            </Button>
+                                            </div>
+                                        </form>
+                                    )
+                                }
+                            </ElementsConsumer>
+                            </Elements>
+                        </Col>
+                    </Row>
+                    </Card.Body>
+                </Card>
             </Container>
-            </Container>
+        </Container>
     )
 }
 

@@ -2,7 +2,6 @@ import React from 'react'
 import {Container, Row, Col, Card} from 'react-bootstrap'
 
 function Review({checkoutToken}) {
-    //console.log(checkoutToken.live.line_items.map(product => product.name))
     return (
         <Container>
         <Card>
@@ -17,7 +16,8 @@ function Review({checkoutToken}) {
         {
             checkoutToken.live.line_items.map(product=>
                     <Row  key={product.id}>
-                        <Col>{product.name}</Col><Col>{product.quantity} * {product.price.formatted_with_symbol}</Col>
+                        <Col>{product.name}</Col>
+                        <Col>{product.quantity} <i className='fas fa-times'/> {product.price.formatted_with_symbol}</Col>
                     </Row>
             )
         }

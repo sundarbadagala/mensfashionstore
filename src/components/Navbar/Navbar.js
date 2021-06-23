@@ -11,18 +11,21 @@ function Navbar() {
         <Container fluid className='bg-primary p-2'>
             <Row>
                 <Col>
-                        <Link to='/' className='text-decoration-none font-weight-bold font-italic header-font text-light'>
+                    <Link to='/' className='text-decoration-none font-weight-bold font-italic header-font text-light'>
                         Mens Fashion Store
-                        </Link>
+                    </Link>
                 </Col>
                 <Col className='d-flex justify-content-end align-items-center'>
-                <Link to='/cart'>
-                    <Button variant='warning' size='md'>
-                        <i className="fas fa-shopping-cart"></i>
+                {
+                    location.pathname !== '/cart' &&
+                    <Link to='/cart'>
+                        <Button variant='warning' size='md'>
+                            <i className="fas fa-shopping-cart"></i>
                         <span className='font-weight-bold  mx-2'>Cart</span>
-                        {product.cart.total_unique_items !== 0  && <Badge pill variant='danger'>{product.cart.total_unique_items}</Badge>} 
-                    </Button>
-                </Link>
+                            {product.cart.total_unique_items !== 0  && <Badge pill variant='danger'>{product.cart.total_unique_items}</Badge>} 
+                        </Button>
+                    </Link>
+                }
                 </Col>
             </Row>
         </Container>

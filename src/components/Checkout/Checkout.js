@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react'
 import {commerce} from '../lib/commerce'
 import {ProductContext} from '../contextAPI'
-import AddressForm from './AddressForm'
+import AddressForm from './AddressForm2'
 import PaymentForm from './PaymentForm'
 import ConfirmationForm from './ConfirmationForm'
 
@@ -23,18 +23,11 @@ function Checkout() {
         generateToken()
     },[product.cart])
     const next =(data)=>{
-        const values = data
-        //console.log(values)
-        setShippingData(values)
-        //console.log(data)
-        //console.log(shippingData)
+        setShippingData(data)
         nextStep()
     }
     const nextStep=()=> setActiveValue(prevActiveValue => prevActiveValue + 1)
     const backStep=()=> setActiveValue(prevActiveValue => prevActiveValue - 1)
-    // const Form = () => activeValue ===0 ? 
-    //     <AddressForm checkoutToken={checkoutToken} next={next}/> : 
-    //     <PaymentForm backStep={backStep} nextStep={nextStep} shippingData={shippingData} checkoutToken={checkoutToken}/>
 
     const FinalValue=()=>{
         if(activeValue===0){
@@ -45,7 +38,6 @@ function Checkout() {
             return <ConfirmationForm/>
         }
     }
-    //console.log(shippingData)
     return (
         <div>
             {checkoutToken && FinalValue()}

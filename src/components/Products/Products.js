@@ -2,6 +2,7 @@ import React, { useContext } from 'react'
 import ProductsCard from './ProductsCard'
 import {ProductContext} from '../contextAPI'
 
+
 const Products = () => {
     const product = useContext(ProductContext)
     return (
@@ -9,7 +10,6 @@ const Products = () => {
             {
                 product.products.map((item, index) => <ProductsCard {...item} key={index}/>)
             }
-            
         </div>
     )
 }

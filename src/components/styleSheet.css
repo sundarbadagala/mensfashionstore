@@ -8,7 +8,24 @@
 .image-height{
     height: 270px;
 }
-
+.error-input{
+    border: none;
+    border-bottom: 1px solid black;
+}
+.error-input:active{
+    outline: none;
+    border: none;
+    border-bottom: 1px solid black;
+}
+.error-input:hover{
+    outline: none;
+    border: none;
+    border-bottom: 1px solid black;
+}
+.error-input:blank{
+    border: none;
+    outline: none;
+}
 @media screen and (max-width:618px) {
     .header-font{
         font-size: 20px;

@@ -3,7 +3,6 @@ import {commerce} from './lib/commerce'
 
 const ProductContext = React.createContext()
 
-
 class ProductProvider extends React.Component{
     constructor(props) {
         super(props)
@@ -17,7 +16,10 @@ class ProductProvider extends React.Component{
              newOrder:{}
         }
     }
-    
+    componentDidMount(){
+        this.fetchProducts()
+        this.fetchCart()
+    }
     fetchProducts= async ()=>{
         const response= await commerce.products.list()
         this.setState({
@@ -60,23 +62,28 @@ class ProductProvider extends React.Component{
             cart: newCart
         })
     }
-    handleCaptureCheckout= (checkoutTokenId, newOrder)=>{
+    handleCaptureCheckout= async (checkoutTokenId, newOrder)=>{
+        try {
+            const incomingOrder = await commerce.checkout.capture(checkoutTokenId, newOrder)
+            this.setState({
+                order: incomingOrder
+            })
+            this.refreshCart()
+        } catch (error) {
+            this.setState({
+                errorMessage: error.data.error.message
+            })
+        }
+        
         this.setState({
             checkoutTokenId:checkoutTokenId,
             newOrder:newOrder
         })
-        //console.log('direct new order', checkoutTokenId)
-        commerce.checkout.capture(checkoutTokenId, newOrder)
-        .then(res => console.log(res))
-        .catch(error => console.log(error))
+        
     }
    
-    componentDidMount(){
-        this.fetchProducts()
-        this.fetchCart()
-    }
+    
     render() {
-        //console.log(this.state.newOrder.customer && this.state.newOrder.customer.name)
         return (
             <ProductContext.Provider value={{
                 ...this.state,
